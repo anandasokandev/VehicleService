@@ -9,4 +9,9 @@ import { SignupPageComponent } from "../../pages/signup-page/signup-page.compone
 })
 export class SignupComponent {
 
+  role: string = 'User'
+
+  setRole = (role: string) => {
+    this.role = role;
+  }
 }

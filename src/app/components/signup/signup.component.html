@@ -1,9 +1,9 @@
 <div class="d-flex flex-column align-items-center">
     <div class="btn-group mt-4" role="group" aria-label="Signup type">
-        <button type="button" class="btn btn-outline-success">
+        <button type="button" (click)="setRole('User')" [class.active]="role == 'User'" class="btn btn-outline-primary">
             Signup as User
         </button>
-        <button type="button" class="btn btn-outline-primary">
+        <button type="button" (click)="setRole('ServiceCenter')"  [class.active]="role == 'ServiceCenter' " class="btn btn-outline-primary">
             Signup as Service Center
         </button>
     </div>
@@ -12,7 +12,7 @@
 <div class="container">
     <div class="row mt-4">
         <div class="col-12">
-            <app-signup-page></app-signup-page>
+            <app-signup-page [role]="role" ></app-signup-page>
         </div>
     </div>
 </div>
