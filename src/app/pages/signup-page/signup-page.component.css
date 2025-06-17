@@ -1,3 +1,7 @@
 .main{
    height: auto;
 }
+
+span{
+   cursor: pointer;
+}
