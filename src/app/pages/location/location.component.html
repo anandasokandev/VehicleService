@@ -1,0 +1,21 @@
+<div class="modal fade"
+     [ngClass]="{ 'show': show }"
+     [style.display]="show ? 'block' : 'none'"
+     style="background-color: rgba(0,0,0,0.5);"
+     tabindex="-1"
+     (click)="onClose()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Shared Modal</h5>
+        <button type="button" class="btn-close" (click)="onClose()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>This modal is triggered from another component!</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
