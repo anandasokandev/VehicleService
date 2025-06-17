@@ -1,0 +1,65 @@
+:host {
+      display: block;
+      max-width: 480px;
+      margin: 0 auto;
+      font-family: 'Inter', sans-serif;
+      user-select: none;
+    }
+    .calendar-weekdays > div {
+      font-size: 0.875rem;
+      color: #6c757d;
+    }
+    .day-button {
+ font-size: 1rem;
+      font-weight: 500;
+      border: 1px solid transparent;
+      transition: all 0.3s ease;
+      background-color: transparent;
+    }
+    .day-button:hover:not(.disabled):not(.booked),
+    .day-button:focus-visible:not(.disabled):not(.booked) {
+      background-color: #d0e8ff;
+      outline: none;
+      border-color: #007bff;
+      z-index: 2;
+      box-shadow: 0 0 5px rgba(0,123,255,0.6);
+      cursor: pointer;
+    }
+    .day-button.disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+    .day-button.today {
+      border: 2px solid #0d6efd;
+      font-weight: 700;
+      color: #0d6efd;
+      position: relative;
+    }
+    .day-button.selected {
+      background: linear-gradient(135deg, #0dcaf0, #198754);
+      color: white;
+      border-color: #198754;
+      font-weight: 700;
+      box-shadow: 0 4px 10px rgba(25, 135, 84, 0.5);
+      position: relative;
+      z-index: 3;
+    }
+    .day-button.booked {
+      background-color: #dc3545;
+      color: white;
+      cursor: not-allowed;
+      font-weight: 600;
+    }
+    .btn-outline-primary {
+      min-width: 38px;
+      min-height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }@media (max-width: 575.98px) {
+      :host {
+        max-width: 100%;
+        padding: 0 12px;
+      }
+    }
