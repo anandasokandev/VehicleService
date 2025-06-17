@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
-import { NavbarComponent } from "../navbar/navbar.component";
-import { RouterOutlet } from '@angular/router';
+import { Router } from '@angular/router';
+import { UpcommingBookingComponent } from "../../pages/upcomming-booking/upcomming-booking.component";
 
 @Component({
   selector: 'app-home',
-  imports: [RouterOutlet, NavbarComponent],
+  imports: [UpcommingBookingComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-
+constructor(private router: Router){
+    console.log(this.router.url);
+  }
 }
