@@ -7,11 +7,26 @@
   <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Shared Modal</h5>
+        <h5 class="modal-title">Add Location</h5>
         <button type="button" class="btn-close" (click)="onClose()" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p>This modal is triggered from another component!</p>
+        <div class="container-fluid">
+          <form action="">
+            <div class="row mb-3">
+              <div class="col">
+                <label for="locationName" class="form-label">Location Name</label>
+                <input type="text" id="locationName" class="form-control">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <label for="pincode" class="form-label">Pincode</label>
+                <input type="text" id="pincode" class="form-control">
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-success">Save</button>
