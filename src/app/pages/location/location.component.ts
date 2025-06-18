@@ -23,6 +23,7 @@ export class LocationComponent {
   }
 
   addLocation(){
+    console.log(this.locationObj);
     
   }
   
