@@ -12,24 +12,24 @@
       </div>
       <div class="modal-body">
         <div class="container-fluid">
-          <form action="">
+          <form [formGroup]="locationForm" (ngSubmit)="addLocation()">
             <div class="row mb-3">
               <div class="col">
-                <label for="locationName" class="form-label">Location Name</label>
-                <input type="text" id="locationName" class="form-control">
+                <label for="locationName"  class="form-label">Location Name</label>
+                <input type="text" id="locationName" formControlName="locationForm.LocationName" class="form-control">
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <label for="pincode" class="form-label">Pincode</label>
-                <input type="text" id="pincode" class="form-control">
+                <input type="text" id="pincode" formControlName="locationForm.Pincode" class="form-control">
               </div>
             </div>
           </form>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success">Save</button>
+        <button type="submit" class="btn btn-success">Save</button>
       </div>
     </div>
   </div>
