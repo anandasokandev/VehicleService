@@ -5,14 +5,14 @@
                 <h3>Login</h3>
             </div>
             <div class="card-body">
-                <form class="form">
+                <form [formGroup]="loginForm" (ngSubmit)="login()" >
                     <div class="row mb-3 p-2">
                         <label for="username" class="form-label">Username</label>
-                        <input type="text" id="username" class="form-control">
+                        <input type="text" id="username" formControlName="Username" class="form-control">
                     </div>
                     <div class="row mb-3 p-2">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" id="password" class="form-control">
+                        <input type="password" id="password" formControlName="Password" class="form-control">
                     </div>
                     <div class="row justify-content-center">
                         <div class="col-auto">
