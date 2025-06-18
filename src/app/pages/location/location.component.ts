@@ -14,7 +14,7 @@ export class LocationComponent {
 
   constructor(private fb: FormBuilder){
     this.locationForm = this.fb.group({
-      LocationName: ['',[Validators.required]],
+      LocationName: ['', [Validators.required]],
       Pincode: ['',[Validators.required]]
     })
   }
