@@ -1,23 +1,19 @@
 import { NgClass } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Location } from '../../model/location';
+import { ApiService } from '../../service/api.service';
 
 @Component({
   selector: 'app-location',
-  imports: [NgClass, ReactiveFormsModule],
+  imports: [FormsModule, NgClass],
   templateUrl: './location.component.html',
   styleUrl: './location.component.css',
 })
 export class LocationComponent {
 
-  locationForm: FormGroup;
-
-  constructor(private fb: FormBuilder){
-    this.locationForm = this.fb.group({
-      LocationName: ['', [Validators.required]],
-      Pincode: ['',[Validators.required]]
-    })
-  }
+  locationObj: Location = new Location();
+  locationService = inject(ApiService);
 
   @Input() show = false;
   @Output() close = new EventEmitter<void>();
@@ -27,8 +23,7 @@ export class LocationComponent {
   }
 
   addLocation(){
-    if(this.locationForm.valid){
-      console.log(this.locationForm.value);
-    }
+    
   }
+  
 }
