@@ -3,6 +3,8 @@ import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { BookingComponent } from './components/booking/booking.component';
+import { BookingHistoryComponent } from './components/booking-history/booking-history.component';
+import { UpcommingBookingComponent } from './pages/upcomming-booking/upcomming-booking.component';
 
 export const routes: Routes = [
     {
@@ -24,6 +26,19 @@ export const routes: Routes = [
     },
     {
         path:'booking',
-        component: BookingComponent
+        children: [
+            {
+                path: 'currentbooking',
+                component: UpcommingBookingComponent
+            },
+            {
+                path: 'newbooking',
+                component: BookingComponent
+            },
+            {
+                path: 'bookinghistory',
+                component: BookingHistoryComponent
+            }
+        ]
     }
 ];

@@ -50,10 +50,6 @@
                             <option value="">2</option>
                             <option value="">3</option>
                         </select>
-                        <div class="mt-2">
-                            <p >Can't find your location? <span class="fw-bold text-primary" (click)="openModal()">Add Location</span></p>
-                            <app-location [show]="showModal" (close)="handleCloseModal()" ></app-location>
-                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -64,6 +60,11 @@
                     </div>
                 </div>
             </form>
+            <div class="mt-2">
+                <p>Can't find your location? <span class="fw-bold text-primary" (click)="openModal()">Add
+                        Location</span></p>
+                <app-location [show]="showModal" (close)="handleCloseModal()"></app-location>
+            </div>
         </div>
     </div>
 </div>

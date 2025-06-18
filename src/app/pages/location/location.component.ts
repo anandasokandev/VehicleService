@@ -22,9 +22,7 @@ export class LocationComponent {
     this.close.emit();
   }
 
-  addLocation(){
-    console.log(this.locationObj);
-    
+  addLocation(){ 
   }
   
 }
