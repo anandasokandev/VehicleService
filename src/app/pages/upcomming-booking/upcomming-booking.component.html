@@ -1,14 +1,14 @@
 <div class="card shadow-sm">
-    <div class="card-header d-flex justify-content-between text-white p-3" 
-    [ngClass]="{
-    'bg-success': bookingStatus === 'Current',
-    'bg-primary': bookingStatus === 'Rescheduled',
-    'bg-danger': bookingStatus === 'Cancelled',
-    'bg-warning': bookingStatus === 'Completed'
-  }">
+    <div class="card-header d-flex justify-content-between text-white p-3" [ngClass]="{
+         'bg-success': bookingStatus === 'Success',
+         'bg-primary': bookingStatus === 'Rescheduled',
+         'bg-danger': bookingStatus === 'Cancelled',
+         'bg-warning': bookingStatus === 'Completed'
+       }">
         <h5 class="mb-0 p-2">{{ bookingStatus }} Booking</h5>
-        <button class="btn btn-light" routerLink="/booking/newbooking"  routerLinkActive="router-link-active" >Create New Booking</button>
+        <button class="btn btn-light" routerLink="/booking/newbooking">Create New Booking</button>
     </div>
+
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered table-hover text-center mb-0">
@@ -16,35 +16,39 @@
                     <tr>
                         <th>Booking ID</th>
                         <th>Vehicle Number</th>
-                        <th>Date</th>
-                        <th>Time</th>
+                        <th>Start Date</th>
+                        <th>Expected End Time</th>
                         <th>Service Center</th>
-                        <th>Actions</th>
+                        @if (bookingStatus !== 'Completed' && bookingStatus !== 'Cancelled')
+                        {
+                            <th>Actions</th>
+                        }
                     </tr>
                 </thead>
                 <tbody>
+                    @for (item of bookingDetails; track $index) {
+                    @if (item.bookingStatus === bookingStatus )
+                    {
                     <tr>
-                        <td>#BKG10234</td>
-                        <td>KL-38-AZ-4567</td>
-                        <td>2025-06-20</td>
-                        <td>10:30 AM</td>
-                        <td>AutoFix Garage, Thodupuzha</td>
+                        <td>{{ item.bookingId }}</td>
+                        <td>{{ item.registrationNumber }}</td>
+                        <td>{{ item.startTime | date: 'dd/MM/yyyy, h:mm a'}}</td>
+                        <td>{{ item.endTime | date: 'dd/MM/yyyy, h:mm a'}}</td>
+                        <td>{{ item.serviceCenterName }}</td>
+                        @if (bookingStatus !== 'Completed')
+                        {
                         <td>
                             <button class="btn btn-sm btn-outline-primary">Reschedule</button>
                             <button class="btn btn-sm btn-outline-danger">Cancel</button>
                         </td>
+                        }
                     </tr>
+                    }@else {
                     <tr>
-                        <td>#BKG10235</td>
-                        <td>KL-38-BX-8831</td>
-                        <td>2025-06-22</td>
-                        <td>02:00 PM</td>
-                        <td>SpeedLine Workshop, Muvattupuzha</td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary">Reschedule</button>
-                            <button class="btn btn-sm btn-outline-danger">Cancel</button>
-                        </td>
+                        <td colspan="6" class="text-center text-muted">Booking not available</td>
                     </tr>
+                    }
+                    }
                 </tbody>
             </table>
         </div>

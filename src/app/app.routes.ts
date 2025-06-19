@@ -5,6 +5,8 @@ import { SignupComponent } from './components/signup/signup.component';
 import { BookingComponent } from './components/booking/booking.component';
 import { BookingHistoryComponent } from './components/booking-history/booking-history.component';
 import { UpcommingBookingComponent } from './pages/upcomming-booking/upcomming-booking.component';
+import { ServiceCenterComponent } from './components/service-center/service-center.component';
+import { authGuard } from './guard/auth.guard';
 
 export const routes: Routes = [
     {
@@ -14,7 +16,7 @@ export const routes: Routes = [
     },
     {
         path: 'login',
-        component: LoginComponent
+        component: LoginComponent,
     },
     {
         path: 'signup',
@@ -22,7 +24,12 @@ export const routes: Routes = [
     },
     {
         path: 'dashboard',
-        component: HomeComponent
+        component: HomeComponent,
+        canActivate: [authGuard]
+    },
+    {
+        path: 'service-center',
+        component: ServiceCenterComponent
     },
     {
         path:'booking',

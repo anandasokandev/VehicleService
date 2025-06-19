@@ -1,0 +1,27 @@
+<form>
+    @if (searchType === 'Pincode')
+    {
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" id="pincode" placeholder="Enter Pincode">
+        <button type="submit" class="btn btn-danger">Find</button>
+    </div>
+    }
+    @if (searchType === 'Location')
+    {
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" id="location" placeholder="Enter Location Name">
+        <button type="submit" class="btn btn-danger">Find</button>
+    </div>
+    }
+    @if (searchType === 'Service Type') 
+    {
+        <div class="input-group mb-3">
+        <label class="input-group-text" for="serviceType">Service Type</label>
+        <select id="serviceType" class="form-select" required>
+            <option value="">Select</option>
+            <option value="1">Two Wheeler</option>
+            <option value="2">Four Wheeler</option>
+        </select>
+    </div>
+    }
+</form>

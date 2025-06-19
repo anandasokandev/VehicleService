@@ -37,20 +37,26 @@
       </ul>
 
       }
-      @if (isLogin == 'false') 
+      @if (isLogin != 'true' && currentUrl === '/login' || currentUrl === '/signup') 
       {
         <div class="buttons d-flex ms-auto">
-        <div class="m-1">
+        @if (currentUrl !== '/login') 
+        {
+          <div class="m-1">
           <button class="btn btn-success" routerLink="/login" routerLinkActive="router-link-active" >Login</button>
         </div>
+        }@else{
         <div class="m-1">
           <button class="btn btn-warning" routerLink="/signup">Signup</button>
         </div>
+      }
       </div>
-      }@else{
+      }
+      
+      @if(isLogin === 'true') {
         <div class="buttons d-flex ms-auto">
         <div class="m-1">
-          <button class="btn btn-warning" routerLink="/login" routerLinkActive="router-link-active" >Logout</button>
+          <button class="btn btn-warning" (click)="logout()" routerLinkActive="router-link-active" >Logout</button>
         </div>
       </div>
       }

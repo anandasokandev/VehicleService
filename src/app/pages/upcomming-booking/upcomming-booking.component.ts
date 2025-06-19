@@ -1,15 +1,40 @@
-import { NgClass } from '@angular/common';
+import { DatePipe, NgClass, NgFor } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { ApiService } from '../../service/api.service';
 
 @Component({
   selector: 'app-upcomming-booking',
-  imports: [NgClass, RouterLink],
+  imports: [NgClass, RouterLink, DatePipe],
   templateUrl: './upcomming-booking.component.html',
   styleUrl: './upcomming-booking.component.css'
 })
 export class UpcommingBookingComponent {
 
-  @Input() bookingStatus = 'Current';
+  @Input() bookingStatus = 'Success';
+  userId: number;
+  bookingDetails : any[] = [];
+  Array = Array;
+
+  constructor(private router: Router, private api: ApiService) {
+    const storedId = localStorage.getItem('userId');
+    this.userId = storedId ? parseInt(storedId, 10) : 0;
+  }
+
+  ngOnInit() {
+    this.fetchUserBooking();
+  }
+
+  fetchUserBooking() {
+  this.api.fetchUserBooking(this.userId).subscribe({
+    next: (res) => {
+      this.bookingDetails = res;
+      console.log(this.bookingDetails);
+    },
+    error: (err) => {
+      console.error('Error fetching booking:', err);
+    }
+  });
+}
 
 }

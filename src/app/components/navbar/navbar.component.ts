@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
+import { ApiService } from '../../service/api.service';
 
 @Component({
   selector: 'app-navbar',
@@ -7,30 +8,39 @@ import { NavigationEnd, Router, RouterLink } from '@angular/router';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent {
-  
-  currentUrl: string = '';
-  isLogin: string = ''
+export class NavbarComponent implements OnInit {
 
+  currentUrl = '';
+  isLogin = localStorage.getItem('isLogin');
 
-  constructor(private router: Router){
-    console.log(this.router.url);
-    this.isLogin = localStorage.getItem("isLogin") || '';
+  constructor(private router: Router, private api: ApiService) {
+    console.log(this.isLogin);
+
+    if (this.isLogin !== 'true') {
+      alert('Login to continue');
+      this.router.navigate(['/login']);
+    }
+
   }
 
+  logout() {
+    this.api.logout().subscribe({
+      next: () => {
+        localStorage.clear();
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        console.error('Logout failed:', err);
+      }
+    });
+  }
 
 
   ngOnInit() {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.currentUrl = event.url;
-        console.log('URL changed to:', this.currentUrl);
       }
     });
-
-    if(this.isLogin != 'true'){
-      alert('Please login to continue');
-      this.router.navigate(['/login']);
-    }
   }
 }

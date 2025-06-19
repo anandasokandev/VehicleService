@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators,  } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators, } from '@angular/forms';
 import { ApiService } from '../../service/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,23 +13,30 @@ export class LoginComponent {
 
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private api: ApiService) {
+  constructor(private fb: FormBuilder, private api: ApiService, private router: Router) {
+
     this.loginForm = this.fb.group({
       Username: ['', [Validators.required]],
-      Password: ['', [Validators.required, Validators.minLength(5)]] 
+      Password: ['', [Validators.required, Validators.minLength(4)]]
     });
+
   }
-  
+
   login() {
     event?.preventDefault();
-    console.log(this.loginForm.value);
-    
     if (this.loginForm.valid) {
       this.api.login(this.loginForm.value).subscribe((res: any) => {
-        console.log(res);
+        if (res.success === true) {
+          console.log(res);
+          localStorage.setItem('isLogin', 'true');
+          localStorage.setItem("userId", res.user)
+          this.router.navigate(['/dashboard']);
+        }
       }, (error: Error) => {
         console.log('Login Failed', error);
       })
+    } else {
+      console.log('All fields are required');
     }
   }
 

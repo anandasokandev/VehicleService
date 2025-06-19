@@ -1,0 +1,15 @@
+<div class="card shadow-lg mt-3">
+    <div class="card-header text-center bg-primary text-white">
+        <h5 class="mb-0">Find Service Center</h5>
+    </div>
+    <div class="card-body">
+        <div class="text-center mb-3">
+            <div class="btn-group" role="group">
+                <button class="btn btn-outline-primary" [class.active]="searchType === 'Pincode'" (click)="findServiceCenter('Pincode')">Pincode</button>
+                <button class="btn btn-outline-primary" [class.active]="searchType === 'Location'" (click)="findServiceCenter('Location')">Location</button>
+                <button class="btn btn-outline-primary" [class.active]="searchType === 'Service Type'" (click)="findServiceCenter('Service Type')">Service Type</button>
+            </div>
+        </div>
+        <app-service-center-input [searchType]="searchType"></app-service-center-input>
+    </div>
+</div>

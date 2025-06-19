@@ -9,7 +9,7 @@ import { UpcommingBookingComponent } from "../../pages/upcomming-booking/upcommi
 })
 export class BookingHistoryComponent {
 
-  status: string = 'Current'
+  status: string = 'Success'
 
   bookingStatus(status: string) {
     this.status = status;
