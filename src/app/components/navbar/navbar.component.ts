@@ -10,10 +10,15 @@ import { NavigationEnd, Router, RouterLink } from '@angular/router';
 export class NavbarComponent {
   
   currentUrl: string = '';
+  isLogin: string = ''
+
 
   constructor(private router: Router){
     console.log(this.router.url);
+    this.isLogin = localStorage.getItem("isLogin") || '';
   }
+
+
 
   ngOnInit() {
     this.router.events.subscribe(event => {
@@ -22,5 +27,10 @@ export class NavbarComponent {
         console.log('URL changed to:', this.currentUrl);
       }
     });
+
+    if(this.isLogin != 'true'){
+      alert('Please login to continue');
+      this.router.navigate(['/login']);
+    }
   }
 }
