@@ -1,6 +1,8 @@
 import { DatePipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
 import { Component, OnInit, Pipe } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { ApiService } from '../../service/api.service';
 
 @Component({
   selector: 'app-booking',
@@ -9,6 +11,8 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./booking.component.css']
 })
 export class BookingComponent implements OnInit {
+
+  userId: number = 0
   currentYear: number = 0;
   currentMonth: number = 0;
   months = [
@@ -24,10 +28,15 @@ export class BookingComponent implements OnInit {
   bookingConfirmed = false;
   bookedDates: string[] = [];
   selectedTime = '';
-  vehicles: string[] = ['KL-07-BQ-1234 - Activa 6G', 'KL-38-AZ-4567 - Swift Dzire'];
-  serviceCenters: string[] = ['AutoFix Garage, Thodupuzha', 'SpeedLine Workshop, Muvattupuzha'];
-  selectedVehicle: string = '';
-  selectedCenter: string = '';
+  selectedCenterId: number | null = null;
+  vehicles: any[] = [];
+  selectedVehicle: [] = [];   // Selected Vehicle
+  selectedCenter: any[] = [];
+
+  constructor(private api: ApiService) {
+    const storedId = localStorage.getItem('userId');
+    this.userId = storedId ? parseInt(storedId, 10) : 0;
+  }
 
   ngOnInit(): void {
     const today = new Date();
@@ -35,8 +44,10 @@ export class BookingComponent implements OnInit {
     this.currentMonth = today.getMonth();
     this.bookedDates = [];
     this.generateCalendar();
+    this.fetchVehicles();
   }
 
+  // Generate Calender 
   generateCalendar(): void {
     this.calendarDays = [];
     const firstDay = new Date(this.currentYear, this.currentMonth, 1);
@@ -47,11 +58,7 @@ export class BookingComponent implements OnInit {
     for (let day = 1; day <= daysInMonth; day++) this.calendarDays.push(day);
   }
 
-  selectTime(time: string) {
-    this.selectedTime = time;
-    this.bookingConfirmed = false;
-  }
-
+  // to get previous month
   prevMonth(): void {
     this.currentMonth = this.currentMonth === 0 ? 11 : this.currentMonth - 1;
     if (this.currentMonth === 11) this.currentYear--;
@@ -59,6 +66,7 @@ export class BookingComponent implements OnInit {
     this.generateCalendar();
   }
 
+  // to get next month
   nextMonth(): void {
     this.currentMonth = this.currentMonth === 11 ? 0 : this.currentMonth + 1;
     if (this.currentMonth === 0) this.currentYear++;
@@ -66,6 +74,7 @@ export class BookingComponent implements OnInit {
     this.generateCalendar();
   }
 
+  // to select date for booking
   selectDate(day: number): void {
     const date = new Date(this.currentYear, this.currentMonth, day);
     if (this.isBooked(date)) return;
@@ -73,14 +82,24 @@ export class BookingComponent implements OnInit {
     this.bookingConfirmed = false;
   }
 
+  // Select booking time
+  selectTime(time: string) {
+    this.selectedTime = time;
+    this.bookingConfirmed = false;
+  }
+
+  // confirm booking
   confirmBooking(): void {
     if (this.selectedDate && !this.isBooked(this.selectedDate)) {
       const iso = this.selectedDate.toISOString().split('T')[0];
       this.bookedDates.push(iso);
       this.bookingConfirmed = true;
+      console.log(this.bookingConfirmed);
+
     }
   }
 
+  // to check current day
   isToday(day: number | null): boolean {
     if (!day) return false;
     const today = new Date();
@@ -89,6 +108,7 @@ export class BookingComponent implements OnInit {
       this.currentYear === today.getFullYear();
   }
 
+  // If the day is selected or not
   isSelected(day: number | null): boolean {
     if (!day || !this.selectedDate) return false;
     return day === this.selectedDate.getDate() &&
@@ -96,6 +116,7 @@ export class BookingComponent implements OnInit {
       this.currentYear === this.selectedDate.getFullYear();
   }
 
+  // To check where there is any booking exists for the day
   isBooked(day: number | Date | null): boolean {
     if (!day) return false;
     let date: Date;
@@ -119,4 +140,40 @@ export class BookingComponent implements OnInit {
     this.selectedDate = null;
     this.bookingConfirmed = false;
   }
+
+  // to fetch user vehicles
+  fetchVehicles() {
+    this.api.fetchVehicleByUser(this.userId).subscribe((res: any) => {
+      this.vehicles = res;
+      console.log(this.vehicles);
+    })
+  }
+
+  // fetch service center based on user vehicle type
+  fetchSeviceCenter(serviceCategoryId: number) {
+    this.api.fetchServiceCenterByCategoryId(serviceCategoryId).subscribe((res: any) => {
+      this.selectedCenter = res;
+      console.log(res);
+    })
+  }
+
+  // After vehicle is selected
+  onVehicleSelected(vehicleId: number) {
+    const serviceVehicle = this.vehicles.find(v => v.vehicleId == vehicleId);
+    if (serviceVehicle) {
+      const serviceCategoryId = serviceVehicle.serviceCategoryId;
+      this.fetchSeviceCenter(serviceCategoryId);
+    }
+  }
+
+  //select service center
+  selectServiceCenter(serviceCenterId: number) {
+    this.selectedCenterId = serviceCenterId;
+    this.selectedCenter = this.selectedCenter.filter(sc => sc.serviceCenterId === serviceCenterId);
+    console.log(this.selectedCenter);
+    
+    debugger
+  }
+
+
 }
