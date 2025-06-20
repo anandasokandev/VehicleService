@@ -1,65 +1,50 @@
 import { DatePipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Pipe } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-booking',
-  imports: [NgIf, NgFor, FormsModule, NgStyle, NgClass, DatePipe],
+  imports: [FormsModule, NgStyle, DatePipe, NgIf, NgFor, NgClass],
   templateUrl: './booking.component.html',
   styleUrls: ['./booking.component.css']
 })
 export class BookingComponent implements OnInit {
-  vehicles = ['KL-07-AB-1234', 'KL-08-CD-5678'];
-  serviceCenters = ['AutoFix Garage', 'TurboCare Workshop'];
-  selectedVehicle = '';
-  selectedCenter = '';
-  selectedDate: Date | null = null;
-  selectedTime = '';
-  bookingConfirmed = false;
-
-  currentDate = new Date();
-  currentMonth = this.currentDate.getMonth();
-  currentYear = this.currentDate.getFullYear();
-  months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  calendarDays: (number | null)[] = [];
-
+  currentYear: number = 0;
+  currentMonth: number = 0;
+  months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December',
+  ];
   availableTimes = [
     '08:00 AM', '09:00 AM', '10:00 AM', '11:00 AM',
     '12:00 PM', '01:00 PM', '02:00 PM', '03:00 PM'
   ];
-
-  completedDates: Date[] = [
-    new Date(2025, 5, 29), // June 29, 2025
-    new Date(2025, 6, 3),
-    new Date(2025,5,25)   // July 3, 2025
-  ];
+  calendarDays: (number | null)[] = [];
+  selectedDate: Date | null = null;
+  bookingConfirmed = false;
+  bookedDates: string[] = [];
+  selectedTime = '';
+  vehicles: string[] = ['KL-07-BQ-1234 - Activa 6G', 'KL-38-AZ-4567 - Swift Dzire'];
+  serviceCenters: string[] = ['AutoFix Garage, Thodupuzha', 'SpeedLine Workshop, Muvattupuzha'];
+  selectedVehicle: string = '';
+  selectedCenter: string = '';
 
   ngOnInit(): void {
+    const today = new Date();
+    this.currentYear = today.getFullYear();
+    this.currentMonth = today.getMonth();
+    this.bookedDates = [];
     this.generateCalendar();
   }
 
-  generateCalendar() {
+  generateCalendar(): void {
     this.calendarDays = [];
-    const firstDay = new Date(this.currentYear, this.currentMonth, 1).getDay();
-    const totalDays = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
-    for (let i = 0; i < firstDay; i++) this.calendarDays.push(null);
-    for (let d = 1; d <= totalDays; d++) this.calendarDays.push(d);
-  }
+    const firstDay = new Date(this.currentYear, this.currentMonth, 1);
+    const firstDayWeekday = firstDay.getDay();
+    const daysInMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
 
-  prevMonth() {
-    this.currentMonth === 0 ? (this.currentMonth = 11, this.currentYear--) : this.currentMonth--;
-    this.generateCalendar();
-  }
-
-  nextMonth() {
-    this.currentMonth === 11 ? (this.currentMonth = 0, this.currentYear++) : this.currentMonth++;
-    this.generateCalendar();
-  }
-
-  selectDate(day: number) {
-    this.selectedDate = new Date(this.currentYear, this.currentMonth, day);
-    this.selectedTime = '';
-    this.bookingConfirmed = false;
+    for (let i = 0; i < firstDayWeekday; i++) this.calendarDays.push(null);
+    for (let day = 1; day <= daysInMonth; day++) this.calendarDays.push(day);
   }
 
   selectTime(time: string) {
@@ -67,38 +52,71 @@ export class BookingComponent implements OnInit {
     this.bookingConfirmed = false;
   }
 
-  confirmBooking() {
-    if (this.selectedVehicle && this.selectedCenter && this.selectedDate && this.selectedTime) {
+  prevMonth(): void {
+    this.currentMonth = this.currentMonth === 0 ? 11 : this.currentMonth - 1;
+    if (this.currentMonth === 11) this.currentYear--;
+    this.resetSelection();
+    this.generateCalendar();
+  }
+
+  nextMonth(): void {
+    this.currentMonth = this.currentMonth === 11 ? 0 : this.currentMonth + 1;
+    if (this.currentMonth === 0) this.currentYear++;
+    this.resetSelection();
+    this.generateCalendar();
+  }
+
+  selectDate(day: number): void {
+    const date = new Date(this.currentYear, this.currentMonth, day);
+    if (this.isBooked(date)) return;
+    this.selectedDate = date;
+    this.bookingConfirmed = false;
+  }
+
+  confirmBooking(): void {
+    if (this.selectedDate && !this.isBooked(this.selectedDate)) {
+      const iso = this.selectedDate.toISOString().split('T')[0];
+      this.bookedDates.push(iso);
       this.bookingConfirmed = true;
     }
   }
 
   isToday(day: number | null): boolean {
-    if (day === null) return false;
+    if (!day) return false;
     const today = new Date();
-    return today.getDate() === day &&
-           today.getMonth() === this.currentMonth &&
-           today.getFullYear() === this.currentYear;
+    return day === today.getDate() &&
+      this.currentMonth === today.getMonth() &&
+      this.currentYear === today.getFullYear();
   }
 
   isSelected(day: number | null): boolean {
-    if (!this.selectedDate || day === null) return false;
+    if (!day || !this.selectedDate) return false;
     return day === this.selectedDate.getDate() &&
-           this.currentMonth === this.selectedDate.getMonth() &&
-           this.currentYear === this.selectedDate.getFullYear();
+      this.currentMonth === this.selectedDate.getMonth() &&
+      this.currentYear === this.selectedDate.getFullYear();
   }
 
-  isCompleted(day: number | null): boolean {
-    if (day === null) return false;
-    const date = new Date(this.currentYear, this.currentMonth, day);
-    return this.completedDates.some(d =>
-      d.getDate() === date.getDate() &&
-      d.getMonth() === date.getMonth() &&
-      d.getFullYear() === date.getFullYear()
-    );
+  isBooked(day: number | Date | null): boolean {
+    if (!day) return false;
+    let date: Date;
+    if (typeof day === 'number') {
+      date = new Date(this.currentYear, this.currentMonth, day);
+    } else {
+      date = day;
+    }
+    const iso = date.toISOString().split('T')[0];
+    return this.bookedDates.includes(iso);
   }
 
   getAriaLabel(day: number): string {
-    return new Date(this.currentYear, this.currentMonth, day).toDateString();
+    const date = new Date(this.currentYear, this.currentMonth, day);
+    const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const formatted = date.toLocaleDateString(undefined, options);
+    return this.isBooked(day) ? `${formatted} - Booked, unavailable` : formatted;
+  }
+
+  private resetSelection(): void {
+    this.selectedDate = null;
+    this.bookingConfirmed = false;
   }
 }
