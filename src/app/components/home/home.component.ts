@@ -13,4 +13,12 @@ import { ApiService } from '../../service/api.service';
 })
 export class HomeComponent {
 
+  role: string | null = null;
+
+  constructor() {
+    this.role = localStorage.getItem('role');
+    console.log(this.role);
+    
+  }
+
 }

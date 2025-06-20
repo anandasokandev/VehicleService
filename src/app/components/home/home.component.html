@@ -1,5 +1,7 @@
 <div class="container">
-  <div class="row">
+  @if (role == 'User')
+   {
+     <div class="row">
     <div class="col">
       <app-upcomming-booking></app-upcomming-booking>
     </div>
@@ -12,4 +14,17 @@
       <app-service-center></app-service-center>
     </div>
   </div>
+   }@else if ( role == 'ServiceCenter' ){
+    <div class="row">
+      <div class="col">
+        hey
+      </div>
+    </div>
+   }@else {
+     <div class="row">
+      <div class="col">
+        hey
+      </div>
+    </div>
+   }
 </div>

@@ -32,7 +32,7 @@ export class BookingComponent implements OnInit {
   vehicles: any[] = [];
   selectedVehicle: [] = [];   // Selected Vehicle
   selectedCenter: any[] = [];
-
+  serviceVehicle: any = null
   constructor(private api: ApiService) {
     const storedId = localStorage.getItem('userId');
     this.userId = storedId ? parseInt(storedId, 10) : 0;
@@ -90,14 +90,52 @@ export class BookingComponent implements OnInit {
 
   // confirm booking
   confirmBooking(): void {
-    if (this.selectedDate && !this.isBooked(this.selectedDate)) {
-      const iso = this.selectedDate.toISOString().split('T')[0];
-      this.bookedDates.push(iso);
-      this.bookingConfirmed = true;
-      console.log(this.bookingConfirmed);
+    if (this.selectedDate && !this.isBooked(this.selectedDate) && this.selectedTime) {
+      const [time, modifier] = this.selectedTime.split(' ');
+      let [hours, minutes] = time.split(':').map(Number);
+      if (modifier === 'PM' && hours < 12) hours += 12;
+      if (modifier === 'AM' && hours === 12) hours = 0;
 
+      const bookingDateTime = new Date(this.selectedDate);
+      bookingDateTime.setHours(hours, minutes, 0, 0);
+
+      const formattedDateTime = this.formatDateTime(bookingDateTime);
+      console.log(formattedDateTime);
+
+      const bookingPayload = {
+        serviceCenterId: this.selectedCenterId,
+        startTime: formattedDateTime,
+        vehicleId: this.serviceVehicle.vehicleId
+      };
+
+      console.log(bookingPayload);
+      
+      // this.api.bookService(bookingPayload).subscribe({
+      //   next: res => {
+      //     this.bookingConfirmed = true;
+      //     this.bookedDates.push(this.selectedDate!.toISOString().split('T')[0]);
+      //     console.log('✅ Booking success:', res);
+      //   },
+      //   error: err => {
+      //     console.error('❌ Booking failed:', err?.error?.errors || err.message);
+      //   }
+      // });
+
+      this.api.bookService(bookingPayload).subscribe((data: any) => {
+        console.log(data);
+
+      })
     }
   }
+
+  formatDateTime = (dt: Date): string => {
+    const pad = (n: number) => n.toString().padStart(2, '0');
+
+    return `${dt.getFullYear()}-${pad(dt.getMonth() + 1)}-${pad(dt.getDate())}T` +
+      `${pad(dt.getHours())}:${pad(dt.getMinutes())}:${pad(dt.getSeconds())}`;
+  };
+
+
 
   // to check current day
   isToday(day: number | null): boolean {
@@ -145,7 +183,8 @@ export class BookingComponent implements OnInit {
   fetchVehicles() {
     this.api.fetchVehicleByUser(this.userId).subscribe((res: any) => {
       this.vehicles = res;
-      console.log(this.vehicles);
+     console.log(res);
+     
     })
   }
 
@@ -158,21 +197,25 @@ export class BookingComponent implements OnInit {
   }
 
   // After vehicle is selected
-  onVehicleSelected(vehicleId: number) {
-    const serviceVehicle = this.vehicles.find(v => v.vehicleId == vehicleId);
-    if (serviceVehicle) {
-      const serviceCategoryId = serviceVehicle.serviceCategoryId;
-      this.fetchSeviceCenter(serviceCategoryId);
+  onVehicleSelected(Id: number): void {
+
+    const vehicle = this.vehicles.find(v => v.vehicleId == Id);
+
+    if (vehicle) {
+      this.serviceVehicle = vehicle;
+      console.log('Selected vehicle:', this.serviceVehicle);
+      this.fetchSeviceCenter(vehicle.serviceCategoryId);
+    } else {
+      console.warn('Vehicle not found for ID:', Id);
     }
   }
+
 
   //select service center
   selectServiceCenter(serviceCenterId: number) {
     this.selectedCenterId = serviceCenterId;
     this.selectedCenter = this.selectedCenter.filter(sc => sc.serviceCenterId === serviceCenterId);
     console.log(this.selectedCenter);
-    
-    debugger
   }
 
 

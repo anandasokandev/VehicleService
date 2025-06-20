@@ -32,4 +32,16 @@ export class ApiService {
       withCredentials: true
     });
   }
+
+  fetchServiceCenterByCategoryId(serviceCategoryId: number) : Observable<any[]> {
+     return this.http.get<any[]>(`${this.apiUrl}ServiceCenter/ViewServiceCenterByCategory/${serviceCategoryId}`, {
+      withCredentials: true
+    });
+  }
+
+  bookService(bookingDto: any): Observable<string>{
+    return this.http.post<any>(`${this.apiUrl}Booking`,bookingDto,{
+      withCredentials: true
+    })
+  }
 }

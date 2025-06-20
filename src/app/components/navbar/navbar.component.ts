@@ -12,6 +12,7 @@ export class NavbarComponent implements OnInit {
 
   currentUrl = '';
   isLogin = localStorage.getItem('isLogin');
+  role: string | null = null;
 
   constructor(private router: Router, private api: ApiService) {
     console.log(this.isLogin);
@@ -20,6 +21,10 @@ export class NavbarComponent implements OnInit {
       alert('Login to continue');
       this.router.navigate(['/login']);
     }
+
+    this.role = localStorage.getItem('role');
+    console.log(this.role);
+
 
   }
 

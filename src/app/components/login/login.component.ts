@@ -29,7 +29,8 @@ export class LoginComponent {
         if (res.success === true) {
           console.log(res);
           localStorage.setItem('isLogin', 'true');
-          localStorage.setItem("userId", res.user)
+          localStorage.setItem("userId", res.user);
+          localStorage.setItem('role', res.role);
           this.router.navigate(['/dashboard']);
         }
       }, (error: Error) => {

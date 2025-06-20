@@ -7,6 +7,7 @@ import { BookingHistoryComponent } from './components/booking-history/booking-hi
 import { UpcommingBookingComponent } from './pages/upcomming-booking/upcomming-booking.component';
 import { ServiceCenterComponent } from './components/service-center/service-center.component';
 import { authGuard } from './guard/auth.guard';
+import { ViewBookingsComponent } from './components/view-bookings/view-bookings.component';
 
 export const routes: Routes = [
     {
@@ -45,6 +46,20 @@ export const routes: Routes = [
             {
                 path: 'bookinghistory',
                 component: BookingHistoryComponent
+            }
+        ]
+    },
+    {
+        path: 'servicecenter',
+        children: [
+            {
+                path: 'booking',
+                children: [
+                    {
+                        path: 'viewbooking',
+                        component: ViewBookingsComponent
+                    }
+                ]
             }
         ]
     }

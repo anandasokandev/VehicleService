@@ -17,39 +17,38 @@
                         <th>Booking ID</th>
                         <th>Vehicle Number</th>
                         <th>Start Date</th>
-                        <th>Expected End Time</th>
                         <th>Service Center</th>
                         @if (bookingStatus !== 'Completed' && bookingStatus !== 'Cancelled')
                         {
-                            <th>Actions</th>
+                        <th>Actions</th>
                         }
                     </tr>
                 </thead>
                 <tbody>
-                    @for (item of bookingDetails; track $index) {
-                    @if (item.bookingStatus === bookingStatus )
-                    {
+                    @if (bookingDetails.length > 0) {
+                    @for (item of bookingDetails; track item.bookingId) {
+                    @if (item.bookingStatus === bookingStatus) {
                     <tr>
                         <td>{{ item.bookingId }}</td>
                         <td>{{ item.registrationNumber }}</td>
-                        <td>{{ item.startTime | date: 'dd/MM/yyyy, h:mm a'}}</td>
-                        <td>{{ item.endTime | date: 'dd/MM/yyyy, h:mm a'}}</td>
+                        <td>{{ item.startTime | date: 'dd/MM/yyyy, h:mm a' }}</td>
                         <td>{{ item.serviceCenterName }}</td>
-                        @if (bookingStatus !== 'Completed')
-                        {
+                        @if (bookingStatus !== 'Completed') {
                         <td>
                             <button class="btn btn-sm btn-outline-primary">Reschedule</button>
                             <button class="btn btn-sm btn-outline-danger">Cancel</button>
                         </td>
                         }
                     </tr>
-                    }@else {
+                    }
+                    }
+                    } @else {
                     <tr>
                         <td colspan="6" class="text-center text-muted">Booking not available</td>
                     </tr>
                     }
-                    }
                 </tbody>
+
             </table>
         </div>
     </div>

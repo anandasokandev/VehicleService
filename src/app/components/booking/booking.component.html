@@ -3,8 +3,7 @@
 
 <div class="container my-5">
   <div class="row justify-content-center mb-4">
-    <!-- Vehicle and Service Center Selection -->
-    <div class="col-lg-6">
+    <div class="col-lg-12">
       <div class="card shadow-sm">
         <div class="card-header bg-warning text-black">
           <h5 class="mb-0">Select Vehicle and Service Center</h5>
@@ -13,23 +12,61 @@
           <form>
             <div class="mb-3">
               <label for="vehicleSelect" class="form-label">Select Vehicle</label>
-              <select id="vehicleSelect" class="form-select" [(ngModel)]="selectedVehicle" name="vehicle">
-                <option *ngFor="let vehicle of vehicles" [value]="vehicle">{{ vehicle }}</option>
-              </select>
-            </div>
-            <div class="mb-3">
-              <label for="centerSelect" class="form-label">Select Service Center</label>
-              <select id="centerSelect" class="form-select" [(ngModel)]="selectedCenter" name="center">
-                <option *ngFor="let center of serviceCenters" [value]="center">{{ center }}</option>
+              <select id="vehicleSelect" class="form-select" [(ngModel)]="selectedVehicle"
+                (ngModelChange)="onVehicleSelected($event)" name="vehicle">
+                <option value="">Select Vehicle</option>
+                <option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleId">{{ vehicle.registrationNumber }} -
+                  {{ vehicle.make }} {{ vehicle.model }}</option>
               </select>
             </div>
           </form>
+          <div class="mb-3" *ngIf="serviceVehicle != null">
+            <div class="card">
+              <div class="card-header bg-success text-white">
+                <h5 class="p-1 mb-0">Available Service Center</h5>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-bordered table-hover align-middle">
+                    <thead class="table-light">
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Center Name</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Contact</th>
+                        <th scope="col">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let center of selectedCenter; let i = index">
+                        <th scope="row">{{ i + 1 }}</th>
+                        <td>{{ center.centerName }}</td>
+                        <td>{{ center.addressLane1 }}, {{ center.locationName}} , {{ center.pincode }}</td>
+                        <td>{{ center.phone }}</td>
+                        <td>
+                          <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-outline-success"
+                              (click)="selectServiceCenter(center.serviceCenterId)"
+                               [ngClass]="{
+                                'btn-outline-success': selectedCenterId !== center.serviceCenterId,
+                                'btn-danger': selectedCenterId === center.serviceCenterId
+                              }">
+                              {{ selectedCenterId === center.serviceCenterId ? 'Selected' : 'Select' }}
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
   </div>
-
-  <!-- Calendar and Time Slot Selection -->
   <div class="row g-4">
     <div class="col-lg-6">
       <div class="card shadow-sm h-100">
@@ -55,18 +92,12 @@
           </div>
 
           <div class="calendar-days d-grid mt-3"
-               [ngStyle]="{ 'grid-template-columns': 'repeat(7, 1fr)', 'gap': '8px' }">
-            <button *ngFor="let day of calendarDays"
-                    class="btn p-2 rounded text-center day-button"
-                    [class.disabled]="day === null"
-                    [class.today]="isToday(day)"
-                    [class.selected]="isSelected(day)"
-                    [class.booked]="isBooked(day)"
-                    [attr.aria-selected]="isSelected(day)"
-                    [attr.tabindex]="day !== null ? 0 : -1"
-                    (click)="day !== null && selectDate(day)"
-                    [disabled]="day === null"
-                    [attr.aria-label]="day ? getAriaLabel(day) : ''">
+            [ngStyle]="{ 'grid-template-columns': 'repeat(7, 1fr)', 'gap': '8px' }">
+            <button *ngFor="let day of calendarDays" class="btn p-2 rounded text-center day-button"
+              [class.disabled]="day === null" [class.today]="isToday(day)" [class.selected]="isSelected(day)"
+              [class.booked]="isBooked(day)" [attr.aria-selected]="isSelected(day)"
+              [attr.tabindex]="day !== null ? 0 : -1" (click)="day !== null && selectDate(day)"
+              [disabled]="day === null" [attr.aria-label]="day ? getAriaLabel(day) : ''">
               {{ day }}
             </button>
           </div>
@@ -89,13 +120,10 @@
         </div>
         <div class="card-body d-flex flex-column justify-content-between">
           <div class="d-flex flex-wrap gap-2 justify-content-center mb-3">
-            <button *ngFor="let time of availableTimes"
-                    class="btn"
-                    [ngClass]="{
+            <button *ngFor="let time of availableTimes" class="btn" [ngClass]="{
                       'btn-outline-secondary': selectedTime !== time,
                       'btn-primary': selectedTime === time
-                    }"
-                    (click)="selectTime(time)">
+                    }" (click)="selectTime(time)">
               {{ time }}
             </button>
           </div>
@@ -106,9 +134,8 @@
             <strong class="ms-1">{{ selectedTime }}</strong>
           </div>
 
-          <button class="btn btn-success w-100 mt-3"
-                  [disabled]="!selectedVehicle || !selectedCenter || !selectedTime"
-                  (click)="confirmBooking()">
+          <button class="btn btn-success w-100 mt-3" [disabled]="!selectedVehicle || !selectedCenter || !selectedTime"
+            (click)="confirmBooking()">
             <span class="material-icons me-1">check_circle</span>
             Confirm Booking
           </button>
