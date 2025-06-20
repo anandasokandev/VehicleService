@@ -13,17 +13,27 @@ export class UpcommingBookingComponent {
 
   @Input() bookingStatus = 'Success';
   userId: number;
+  role: string | null = null;
   bookingDetails : any[] = [];
   Array = Array;
 
   constructor(private router: Router, private api: ApiService) {
     const storedId = localStorage.getItem('userId');
     this.userId = storedId ? parseInt(storedId, 10) : 0;
+    console.log(this.userId);
+    
+    this.role = localStorage.getItem('role');
   }
 
   ngOnInit() {
-    this.fetchUserBooking();
+    if(this.role == 'User'){
+      this.fetchUserBooking();
+    }else{
+
+    }
   }
+
+
 
   fetchUserBooking() {
   this.api.fetchUserBooking(this.userId).subscribe({
@@ -35,6 +45,8 @@ export class UpcommingBookingComponent {
       console.error('Error fetching booking:', err);
     }
   });
+
+
 }
 
 }

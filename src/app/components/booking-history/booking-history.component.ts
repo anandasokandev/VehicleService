@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { UpcommingBookingComponent } from "../../pages/upcomming-booking/upcomming-booking.component";
+import { ApiService } from '../../service/api.service';
 
 @Component({
   selector: 'app-booking-history',
@@ -9,7 +10,12 @@ import { UpcommingBookingComponent } from "../../pages/upcomming-booking/upcommi
 })
 export class BookingHistoryComponent {
 
-  status: string = 'Success'
+  status: string = 'Success';
+  role: string | null = null;
+
+  constructor(){
+    this.role = localStorage.getItem('role');
+  }
 
   bookingStatus(status: string) {
     this.status = status;
