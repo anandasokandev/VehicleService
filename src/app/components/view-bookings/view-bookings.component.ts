@@ -4,7 +4,7 @@ import { BookingHistoryComponent } from "../booking-history/booking-history.comp
 
 @Component({
   selector: 'app-view-bookings',
-  imports: [BookingComponent, BookingHistoryComponent],
+  imports: [ BookingHistoryComponent],
   templateUrl: './view-bookings.component.html',
   styleUrl: './view-bookings.component.css'
 })

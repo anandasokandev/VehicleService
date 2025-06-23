@@ -44,4 +44,41 @@ export class ApiService {
       withCredentials: true
     })
   }
+
+  fetchServiceCenterByServiceCenter(serviceCenterId: number) : Observable<any[]> {
+     return this.http.get<any[]>(`${this.apiUrl}Booking/ViewBookingByServiceCenter/${serviceCenterId}`, {
+      withCredentials: true
+    });
+  }
+
+  fetchLocation(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}Location`,{
+      withCredentials: true
+    })
+  }
+
+  fetchServiceCenterByLocation(locationId: any){
+    return this.http.get<any>(`${this.apiUrl}ServiceCenter/ViewServiceCenterByLocation/${locationId}`,{
+      withCredentials: true
+    })
+  }
+
+  fetchVehicleByRegistration(vehicleNumber: any){
+    return this.http.get<any>(`${this.apiUrl}Vehicle/ViewVehicleByRegistrationNumber/${vehicleNumber}`,{
+      withCredentials: true
+    })
+  }
+
+  fetchVehicle(){
+    return this.http.get<any>(`${this.apiUrl}Vehicle`,{
+      withCredentials: true
+    })
+  }
+
+  changeBookingStatus(id: any,status: string){
+    return this.http.put<any>(`${this.apiUrl}Booking/UpdateBookingStatus/${id}`, {status}, {
+      withCredentials: true
+    })
+  }
+
 }

@@ -1,11 +1,11 @@
-import { DatePipe, NgClass, NgFor } from '@angular/common';
+import { DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../service/api.service';
 
 @Component({
   selector: 'app-upcomming-booking',
-  imports: [NgClass, RouterLink, DatePipe],
+  imports: [NgClass, RouterLink, DatePipe, NgIf],
   templateUrl: './upcomming-booking.component.html',
   styleUrl: './upcomming-booking.component.css'
 })
@@ -14,39 +14,40 @@ export class UpcommingBookingComponent {
   @Input() bookingStatus = 'Success';
   userId: number;
   role: string | null = null;
-  bookingDetails : any[] = [];
+  bookingDetails: any[] = [];
   Array = Array;
 
   constructor(private router: Router, private api: ApiService) {
     const storedId = localStorage.getItem('userId');
     this.userId = storedId ? parseInt(storedId, 10) : 0;
     console.log(this.userId);
-    
+
     this.role = localStorage.getItem('role');
   }
 
   ngOnInit() {
-    if(this.role == 'User'){
-      this.fetchUserBooking();
-    }else{
-
-    }
+    this.fetchUserBooking();
   }
 
-
-
   fetchUserBooking() {
-  this.api.fetchUserBooking(this.userId).subscribe({
-    next: (res) => {
-      this.bookingDetails = res;
-      console.log(this.bookingDetails);
-    },
-    error: (err) => {
-      console.error('Error fetching booking:', err);
-    }
-  });
+    this.api.fetchUserBooking(this.userId).subscribe({
+      next: (res) => {
+        this.bookingDetails = res;
+        console.log(this.bookingDetails);
+      },
+      error: (err) => {
+        console.error('Error fetching booking:', err);
+      }
+    });
+  }
 
-
-}
-
+  cancel(item: any) {
+    this.api.changeBookingStatus(item.bookingId, 'Cancelled').subscribe((data: any)=>{
+      if(data.success)
+      {
+        alert('Booking cancelled successfully');
+        window.location.reload();
+      }
+    })
+  }
 }

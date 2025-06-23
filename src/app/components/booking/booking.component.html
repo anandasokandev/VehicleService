@@ -94,10 +94,10 @@
           <div class="calendar-days d-grid mt-3"
             [ngStyle]="{ 'grid-template-columns': 'repeat(7, 1fr)', 'gap': '8px' }">
             <button *ngFor="let day of calendarDays" class="btn p-2 rounded text-center day-button"
-              [class.disabled]="day === null" [class.today]="isToday(day)" [class.selected]="isSelected(day)"
+              [class.disabled]="day === null  || isPastOrToday(day)" [class.today]="isToday(day)" [class.selected]="isSelected(day)"
               [class.booked]="isBooked(day)" [attr.aria-selected]="isSelected(day)"
               [attr.tabindex]="day !== null ? 0 : -1" (click)="day !== null && selectDate(day)"
-              [disabled]="day === null" [attr.aria-label]="day ? getAriaLabel(day) : ''">
+              [disabled]="day === null || isPastOrToday(day)" [attr.aria-label]="day ? getAriaLabel(day) : ''">
               {{ day }}
             </button>
           </div>

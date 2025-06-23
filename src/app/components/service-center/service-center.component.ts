@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ServiceCenterInputComponent } from "../../pages/service-center-input/service-center-input.component";
+import { ApiService } from '../../service/api.service';
 
 @Component({
   selector: 'app-service-center',
@@ -11,7 +12,11 @@ export class ServiceCenterComponent {
 
   searchType: string = 'Pincode'
 
-  findServiceCenter(searchType: string){
-    this.searchType = searchType;
+  locationService = inject(ApiService);
+
+
+  findServiceCenter(ServiceCenter: string){
+    this.searchType = ServiceCenter;
   }
+ 
 }

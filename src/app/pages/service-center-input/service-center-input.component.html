@@ -1,27 +1,61 @@
 <form>
-    @if (searchType === 'Pincode')
-    {
-    <div class="input-group mb-3">
-        <input type="text" class="form-control" id="pincode" placeholder="Enter Pincode">
-        <button type="submit" class="btn btn-danger">Find</button>
-    </div>
-    }
-    @if (searchType === 'Location')
-    {
-    <div class="input-group mb-3">
-        <input type="text" class="form-control" id="location" placeholder="Enter Location Name">
-        <button type="submit" class="btn btn-danger">Find</button>
-    </div>
-    }
-    @if (searchType === 'Service Type') 
-    {
-        <div class="input-group mb-3">
-        <label class="input-group-text" for="serviceType">Service Type</label>
-        <select id="serviceType" class="form-select" required>
-            <option value="">Select</option>
-            <option value="1">Two Wheeler</option>
-            <option value="2">Four Wheeler</option>
-        </select>
-    </div>
-    }
+  <!-- Location-Based Search -->
+  <div *ngIf="searchType === 'Location'" class="input-group mb-3">
+    <label class="input-group-text" for="location">Location</label>
+    <select
+      id="location"
+      class="form-select"
+      [(ngModel)]="selected"
+      name="location"
+      (change)="findServiceCenter(selected)"
+      required
+    >
+      <option value="">Select Location</option>
+      <ng-container *ngFor="let item of location; index as i">
+        <option [value]="item.locationId">
+          {{ item.locationName }} - {{ item.pincode }}
+        </option>
+      </ng-container>
+    </select>
+  </div>
+
+  <!-- Service Type-Based Search -->
+  <div *ngIf="searchType === 'Service Type'" class="input-group mb-3">
+    <label class="input-group-text" for="serviceType">Service Type</label>
+    <select
+      id="serviceType"
+      class="form-select"
+      [(ngModel)]="selected"
+      name="servicetype"
+      (change)="findServiceCenter(selected)"
+      required
+    >
+      <option value="">Select</option>
+      <option value="Two Wheeler">Two Wheeler</option>
+      <option value="Four Wheeler">Four Wheeler</option>
+    </select>
+  </div>
 </form>
+
+<div class="card mt-4 shadow-sm" *ngFor="let center of serviceCenters">
+  <div class="card-body" >
+    <h4 class="card-title">{{ center.centerName }}</h4>
+    <p class="card-text mb-1">
+      {{ center.email }}
+    </p>
+    <p class="card-text mb-1">
+      {{ center.phone }}
+    </p>
+    <p class="card-text mb-1">
+      {{ center.addressLane1 }}
+    </p>
+     <p class="card-text mb-1">
+      {{ center.addressLane2 }}
+    </p>
+    <p class="card-text mb-1">
+      {{ center.locationName }}, {{ center.pincode }}
+    </p>
+   
+  </div>
+</div>
+

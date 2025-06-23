@@ -1,0 +1,32 @@
+<div class="row mt-4">
+    <div class="heading">
+        <h4>Search Vehicle</h4>
+    </div>
+    <div class="col-lg-5">
+        <form action="">
+            <div class="row">
+                <div class="col">
+                    <label for="RegistrationNumber" class="form-label">Registration Number</label>
+                    <input type="text" name="registrationNumber" [(ngModel)]="searchCriteria.registrationNumber"
+                        id="registrationNumber" class="form-control">
+                </div>
+                <div class="m-2">
+                    OR
+                </div>
+                <div class="col">
+                    <label for="ownerName" class="form-label">Owner Name</label>
+                    <input type="text" name="ownerName" [(ngModel)]="searchCriteria.ownerName" id="ownerName"
+                        class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button class="btn btn-primary px-5 mt-3" (click)="search(searchCriteria)">Find</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-lg-7">
+        <app-vehicle-list [vehicleSearch]="searchCriteria"></app-vehicle-list>
+    </div>
+</div>

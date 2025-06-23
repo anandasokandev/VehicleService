@@ -33,10 +33,10 @@
                         <td>{{ item.registrationNumber }}</td>
                         <td>{{ item.startTime | date: 'dd/MM/yyyy, h:mm a' }}</td>
                         <td>{{ item.serviceCenterName }}</td>
-                        @if (bookingStatus !== 'Completed') {
+                        @if (bookingStatus !== 'Completed' && bookingStatus != 'Cancelled') {
                         <td>
                             <button class="btn btn-sm btn-outline-primary">Reschedule</button>
-                            <button class="btn btn-sm btn-outline-danger">Cancel</button>
+                            <button class="btn btn-sm btn-outline-danger ms-1" (click)="cancel(item)">Cancel</button>
                         </td>
                         }
                     </tr>

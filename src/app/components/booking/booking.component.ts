@@ -15,6 +15,7 @@ export class BookingComponent implements OnInit {
   userId: number = 0
   currentYear: number = 0;
   currentMonth: number = 0;
+  today: Date = new Date();
   months = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December',
@@ -45,6 +46,7 @@ export class BookingComponent implements OnInit {
     this.bookedDates = [];
     this.generateCalendar();
     this.fetchVehicles();
+    this.fetchBookingByUser(this.userId);
   }
 
   // Generate Calender 
@@ -88,6 +90,14 @@ export class BookingComponent implements OnInit {
     this.bookingConfirmed = false;
   }
 
+  isPastOrToday(day: number): boolean {
+    const today = new Date();
+    const calendarDate = new Date(this.currentYear, this.currentMonth, day);
+
+    // Disable if the date is today or earlier
+    return calendarDate <= today;
+  }
+
   // confirm booking
   confirmBooking(): void {
     if (this.selectedDate && !this.isBooked(this.selectedDate) && this.selectedTime) {
@@ -109,7 +119,7 @@ export class BookingComponent implements OnInit {
       };
 
       console.log(bookingPayload);
-      
+
       // this.api.bookService(bookingPayload).subscribe({
       //   next: res => {
       //     this.bookingConfirmed = true;
@@ -183,8 +193,8 @@ export class BookingComponent implements OnInit {
   fetchVehicles() {
     this.api.fetchVehicleByUser(this.userId).subscribe((res: any) => {
       this.vehicles = res;
-     console.log(res);
-     
+      console.log(res);
+
     })
   }
 
@@ -218,5 +228,13 @@ export class BookingComponent implements OnInit {
     console.log(this.selectedCenter);
   }
 
+  fetchBookingByUser(userId: any) {
+    this.api.fetchUserBooking(userId).subscribe((data: any[]) => {
+      const filteredBookings = data.filter(b =>
+        b.bookingStatus === 'Success' || b.bookingStatus === 'Rescheduled'
+      );
+      this.bookedDates.push(...filteredBookings.map(b => b.startTime))
+    })
+  }
 
 }

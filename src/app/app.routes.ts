@@ -8,6 +8,8 @@ import { UpcommingBookingComponent } from './pages/upcomming-booking/upcomming-b
 import { ServiceCenterComponent } from './components/service-center/service-center.component';
 import { authGuard } from './guard/auth.guard';
 import { ViewBookingsComponent } from './components/view-bookings/view-bookings.component';
+import { AdminBookingComponent } from './pages/admin/admin-booking/admin-booking.component';
+import { VehicleSearchComponent } from './components/vehicle-search/vehicle-search.component';
 
 export const routes: Routes = [
     {
@@ -33,7 +35,7 @@ export const routes: Routes = [
         component: ServiceCenterComponent
     },
     {
-        path:'booking',
+        path: 'booking',
         children: [
             {
                 path: 'currentbooking',
@@ -57,9 +59,13 @@ export const routes: Routes = [
                 children: [
                     {
                         path: 'viewbooking',
-                        component: ViewBookingsComponent
+                        component: AdminBookingComponent
                     }
                 ]
+            }, 
+            {
+                path: 'vehicle-search',
+                component: VehicleSearchComponent
             }
         ]
     }
