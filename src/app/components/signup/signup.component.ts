@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { SignupPageComponent } from "../../pages/signup-page/signup-page.component";
+import { ApiService } from '../../service/api.service';
 
 @Component({
   selector: 'app-signup',
@@ -14,4 +15,5 @@ export class SignupComponent {
   setRole = (role: string) => {
     this.role = role;
   }
+  
 }

@@ -10,6 +10,7 @@ import { authGuard } from './guard/auth.guard';
 import { ViewBookingsComponent } from './components/view-bookings/view-bookings.component';
 import { AdminBookingComponent } from './pages/admin/admin-booking/admin-booking.component';
 import { VehicleSearchComponent } from './components/vehicle-search/vehicle-search.component';
+import { AddVehicleComponent } from './components/add-vehicle/add-vehicle.component';
 
 export const routes: Routes = [
     {
@@ -33,6 +34,10 @@ export const routes: Routes = [
     {
         path: 'service-center',
         component: ServiceCenterComponent
+    },
+    {
+        path: 'add-vehicle',
+        component: AddVehicleComponent
     },
     {
         path: 'booking',

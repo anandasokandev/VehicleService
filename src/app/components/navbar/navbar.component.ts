@@ -10,23 +10,17 @@ import { ApiService } from '../../service/api.service';
 })
 export class NavbarComponent implements OnInit {
 
-  currentUrl = '';
+  currentUrl: any = '';
   isLogin = localStorage.getItem('isLogin');
   role: string | null = null;
 
   constructor(private router: Router, private api: ApiService) {
     console.log(this.isLogin);
-
-    if (this.isLogin !== 'true') {
-      alert('Login to continue');
-      this.router.navigate(['/login']);
-    }
-
     this.role = localStorage.getItem('role');
     console.log(this.role);
-
-
   }
+
+  
 
   logout() {
     this.api.logout().subscribe({

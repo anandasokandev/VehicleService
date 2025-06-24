@@ -28,57 +28,85 @@ export class ApiService {
   }
 
   fetchVehicleByUser(userId: number): Observable<any[]> {
-     return this.http.get<any[]>(`${this.apiUrl}Vehicle/ViewVehicleByUser/${userId}`, {
+    return this.http.get<any[]>(`${this.apiUrl}Vehicle/ViewVehicleByUser/${userId}`, {
       withCredentials: true
     });
   }
 
-  fetchServiceCenterByCategoryId(serviceCategoryId: number) : Observable<any[]> {
-     return this.http.get<any[]>(`${this.apiUrl}ServiceCenter/ViewServiceCenterByCategory/${serviceCategoryId}`, {
+  fetchServiceCenterByCategoryId(serviceCategoryId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}ServiceCenter/ViewServiceCenterByCategory/${serviceCategoryId}`, {
       withCredentials: true
     });
   }
 
-  bookService(bookingDto: any): Observable<string>{
-    return this.http.post<any>(`${this.apiUrl}Booking`,bookingDto,{
+  bookService(bookingDto: any): Observable<string> {
+    return this.http.post<any>(`${this.apiUrl}Booking`, bookingDto, {
       withCredentials: true
     })
   }
 
-  fetchServiceCenterByServiceCenter(serviceCenterId: number) : Observable<any[]> {
-     return this.http.get<any[]>(`${this.apiUrl}Booking/ViewBookingByServiceCenter/${serviceCenterId}`, {
+  fetchServiceCenterByServiceCenter(serviceCenterId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}Booking/ViewBookingByServiceCenter/${serviceCenterId}`, {
       withCredentials: true
     });
   }
 
-  fetchLocation(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}Location`,{
+  fetchLocation(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}Location`, {
       withCredentials: true
     })
   }
 
-  fetchServiceCenterByLocation(locationId: any){
-    return this.http.get<any>(`${this.apiUrl}ServiceCenter/ViewServiceCenterByLocation/${locationId}`,{
+  fetchServiceCenterByLocation(locationId: any) {
+    return this.http.get<any>(`${this.apiUrl}ServiceCenter/ViewServiceCenterByLocation/${locationId}`, {
       withCredentials: true
     })
   }
 
-  fetchVehicleByRegistration(vehicleNumber: any){
-    return this.http.get<any>(`${this.apiUrl}Vehicle/ViewVehicleByRegistrationNumber/${vehicleNumber}`,{
+  fetchVehicleByRegistration(vehicleNumber: any) {
+    return this.http.get<any>(`${this.apiUrl}Vehicle/ViewVehicleByRegistrationNumber/${vehicleNumber}`, {
       withCredentials: true
     })
   }
 
-  fetchVehicle(){
-    return this.http.get<any>(`${this.apiUrl}Vehicle`,{
+  addVehicle(vehicleDetails: any): Observable<any>{
+    return this.http.post<any>(`${this.apiUrl}Vehicle`,vehicleDetails,{
       withCredentials: true
     })
   }
 
-  changeBookingStatus(id: any,status: string){
-    return this.http.put<any>(`${this.apiUrl}Booking/UpdateBookingStatus/${id}`, {status}, {
+  fetchVehicle() {
+    return this.http.get<any>(`${this.apiUrl}Vehicle`, {
       withCredentials: true
     })
+  }
+
+  changeBookingStatus(id: any, status: string) {
+    return this.http.put<any>(`${this.apiUrl}Booking/UpdateBookingStatus/${id}`, { status }, {
+      withCredentials: true
+    })
+  }
+
+  addLocation(locationPayload: any) {
+    return this.http.post(`${this.apiUrl}Location`, locationPayload, {
+      withCredentials: true
+    })
+  }
+
+  addUser(userData: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}Registration/UserRegistration`, userData, {
+      withCredentials: true
+    });
+  }
+
+  addServiceCenter(userData: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}Registration/ServiceCenterRegistration`, userData, {
+      withCredentials: true
+    });
+  }
+
+  fetchServiceCategory(){
+    return this.http.get<any>(`${this.apiUrl}ServiceCategory`)
   }
 
 }

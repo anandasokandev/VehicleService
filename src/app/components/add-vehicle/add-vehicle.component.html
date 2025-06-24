@@ -1,0 +1,64 @@
+<div class="container my-4">
+  <div class="card shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
+      <h5 class="mb-0">Vehicle Details</h5>
+      <button class="btn btn-light btn-sm" type="button">View Vehicle</button>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="vehicleForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-lg-6 mb-3">
+            <label class="form-label">Registration Number</label>
+            <input type="text" class="form-control" formControlName="registrationNumber">
+            <div *ngIf="vehicleForm.get('registrationNumber')?.touched && vehicleForm.get('registrationNumber')?.invalid" class="text-danger">
+              Registration Number is required.
+            </div>
+          </div>
+
+          <div class="col-lg-6 mb-3">
+            <label class="form-label">Make</label>
+            <input type="text" class="form-control" formControlName="make">
+            <div *ngIf="vehicleForm.get('make')?.touched && vehicleForm.get('make')?.invalid" class="text-danger">
+              Make is required.
+            </div>
+          </div>
+
+          <div class="col-lg-6 mb-3">
+            <label class="form-label">Model</label>
+            <input type="text" class="form-control" formControlName="model">
+            <div *ngIf="vehicleForm.get('model')?.touched && vehicleForm.get('model')?.invalid" class="text-danger">
+              Model is required.
+            </div>
+          </div>
+
+          <div class="col-lg-6 mb-3">
+            <label class="form-label">Year</label>
+            <input type="text" class="form-control" formControlName="year">
+            <div *ngIf="vehicleForm.get('year')?.touched && vehicleForm.get('year')?.invalid" class="text-danger">
+              Enter a valid 4-digit year.
+            </div>
+          </div>
+
+          <div class="col-lg-6 mb-3">
+            <label class="form-label">Category</label>
+            <select class="form-select" formControlName="serviceCategoryId" required>
+              <option value="">Select Category</option>
+              <option *ngFor="let item of serviceCategory" [value]="item.id">
+                {{ item.name }}
+              </option>
+            </select>
+            <div *ngIf="vehicleForm.get('serviceCategoryId')?.touched && vehicleForm.get('serviceCategoryId')?.invalid" class="text-danger">
+              Category is required.
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col ms-auto">
+            <button class="btn btn-success" type="submit" [disabled]="vehicleForm.invalid">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

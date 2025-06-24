@@ -23,6 +23,18 @@ export class LocationComponent {
   }
 
   addLocation(){ 
+    this.locationService.addLocation({locationName: this.locationObj.locationName, pincode: this.locationObj.pincode}).subscribe((data: any)=>{
+      console.log(data);
+      debugger
+      if(data.success == true)
+      {
+        alert("Location added successfully");
+        window.location.reload();
+      }else{
+        alert(`${data.message}`);
+        window.location.reload();
+      }
+    })
   }
   
 }

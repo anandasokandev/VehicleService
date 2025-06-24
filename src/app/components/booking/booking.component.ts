@@ -3,6 +3,7 @@ import { Component, OnInit, Pipe } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ApiService } from '../../service/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-booking',
@@ -34,7 +35,7 @@ export class BookingComponent implements OnInit {
   selectedVehicle: [] = [];   // Selected Vehicle
   selectedCenter: any[] = [];
   serviceVehicle: any = null
-  constructor(private api: ApiService) {
+  constructor(private api: ApiService, private router: Router) {
     const storedId = localStorage.getItem('userId');
     this.userId = storedId ? parseInt(storedId, 10) : 0;
   }
@@ -47,6 +48,15 @@ export class BookingComponent implements OnInit {
     this.generateCalendar();
     this.fetchVehicles();
     this.fetchBookingByUser(this.userId);
+
+    this.api.fetchVehicleByUser(this.userId).subscribe((data: any)=>{
+      console.log(data);
+      if(data.length == 0)
+      {
+        alert('Add Vehicle to continue booking');
+        this.router.navigate(['/add-vehicle'])
+      }
+    })
   }
 
   // Generate Calender 
@@ -118,8 +128,6 @@ export class BookingComponent implements OnInit {
         vehicleId: this.serviceVehicle.vehicleId
       };
 
-      console.log(bookingPayload);
-
       // this.api.bookService(bookingPayload).subscribe({
       //   next: res => {
       //     this.bookingConfirmed = true;
@@ -133,8 +141,14 @@ export class BookingComponent implements OnInit {
 
       this.api.bookService(bookingPayload).subscribe((data: any) => {
         console.log(data);
-
+        debugger
+        if(data.success != false){
+          alert(`Booking ${data.message}`);
+        }else{
+          alert(`${data.message}`);
+        }
       })
+
     }
   }
 

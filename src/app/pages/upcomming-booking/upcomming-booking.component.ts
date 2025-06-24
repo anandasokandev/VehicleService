@@ -5,7 +5,7 @@ import { ApiService } from '../../service/api.service';
 
 @Component({
   selector: 'app-upcomming-booking',
-  imports: [NgClass, RouterLink, DatePipe, NgIf],
+  imports: [NgClass, RouterLink, DatePipe],
   templateUrl: './upcomming-booking.component.html',
   styleUrl: './upcomming-booking.component.css'
 })
