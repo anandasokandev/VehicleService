@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 export class BookingComponent implements OnInit {
 
   userId: number = 0
+  role: string | null = ''
   currentYear: number = 0;
   currentMonth: number = 0;
   today: Date = new Date();
@@ -38,6 +39,7 @@ export class BookingComponent implements OnInit {
   constructor(private api: ApiService, private router: Router) {
     const storedId = localStorage.getItem('userId');
     this.userId = storedId ? parseInt(storedId, 10) : 0;
+    this.role = localStorage.getItem('role');
   }
 
   ngOnInit(): void {
@@ -51,7 +53,7 @@ export class BookingComponent implements OnInit {
 
     this.api.fetchVehicleByUser(this.userId).subscribe((data: any)=>{
       console.log(data);
-      if(data.length == 0)
+      if(data.length == 0 && this.role == 'User' )
       {
         alert('Add Vehicle to continue booking');
         this.router.navigate(['/add-vehicle'])

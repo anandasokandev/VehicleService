@@ -31,14 +31,14 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/service-center">Find Service Center</a>
         </li>
-        <li class="nav-item dropdown">
+        <!-- <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Profile
           </a>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item">Edit Profile</a></li>
           </ul>
-        </li>
+        </li> -->
       </ul>
       }
       }@else if(role == 'ServiceCenter')
@@ -54,7 +54,7 @@
           </a>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" routerLink="/servicecenter/booking/viewbooking" >View Booking</a></li>
-            <li><a class="dropdown-item" routerLink="/booking/bookinghistory">Booking History</a></li>
+            <li><a class="dropdown-item" routerLink="/servicecenter/booking/booking-history">Booking History</a></li>
           </ul>
         </li>
         <li class="nav-item">
@@ -63,18 +63,18 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/service-center">Find Service Center</a>
         </li>
-        <li class="nav-item dropdown">
+        <!-- <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Profile
           </a>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item">Edit Profile</a></li>
           </ul>
-        </li>
+        </li> -->
       </ul>
 
       }
-      }@else {}
+      }
       
       @if (isLogin != 'true' && currentUrl === '/login' || currentUrl === '/signup')
       {

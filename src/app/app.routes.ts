@@ -11,6 +11,8 @@ import { ViewBookingsComponent } from './components/view-bookings/view-bookings.
 import { AdminBookingComponent } from './pages/admin/admin-booking/admin-booking.component';
 import { VehicleSearchComponent } from './components/vehicle-search/vehicle-search.component';
 import { AddVehicleComponent } from './components/add-vehicle/add-vehicle.component';
+import { AdminBookingHistoryComponent } from './components/admin-booking-history/admin-booking-history.component';
+import { AdminBookingViewComponent } from './pages/admin/admin-booking-view/admin-booking-view.component';
 
 export const routes: Routes = [
     {
@@ -64,7 +66,11 @@ export const routes: Routes = [
                 children: [
                     {
                         path: 'viewbooking',
-                        component: AdminBookingComponent
+                        component: AdminBookingViewComponent
+                    },
+                    {
+                        path: 'booking-history',
+                       component: AdminBookingHistoryComponent
                     }
                 ]
             }, 

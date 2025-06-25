@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { AdminBookingViewComponent } from '../admin-booking-view.component';
+import { AdminBookingViewComponent } from '../admin/admin-booking-view/admin-booking-view.component';
 
 
 @Component({
   selector: 'app-admin-dashboard',
-  imports: [ AdminBookingViewComponent],
+  imports: [AdminBookingViewComponent ],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.css'
 })

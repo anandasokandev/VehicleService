@@ -1,12 +1,11 @@
-<div class="card shadow-sm">
+<div class="card shadow-sm mt-4">
     <div class="card-header d-flex justify-content-between text-white p-3" [ngClass]="{
          'bg-success': bookingStatus === 'Success' || bookingStatus === 'Today',
-         'bg-primary': bookingStatus === 'Rescheduled',
          'bg-danger': bookingStatus === 'Cancelled',
          'bg-warning': bookingStatus === 'Completed'
        }">
         <h5 class="mb-0 p-2 text-dark">{{ bookingStatus }} Booking</h5>
-        <button class="btn btn-light" routerLink="/booking/newbooking">Create New Booking</button>
+        <!-- <button class="btn btn-light" routerLink="/booking/newbooking">Create New Booking</button> -->
     </div>
 
     <div class="card-body">
@@ -18,21 +17,30 @@
                         <th>Vehicle Number</th>
                         <th>Owner Name</th>
                         <th>Service Date</th>
-                        <th>Actions</th>
+                        <th *ngIf="bookingStatus != 'Cancelled' && bookingStatus != 'Completed'">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @for (item of bookings; track $index) {
+                    @if (bookings.length > 0) {
+                    @for (item of bookings; track item.bookingId) {
+                    @if (item.bookingStatus === bookingStatus) {
                     <tr>
-                        <td class="m-1">{{ $index + 1 }}</td>
+                        <td>{{ item.bookingId }}</td>
                         <td>{{ item.registrationNumber }}</td>
-                        <td class="m-1">{{ item.ownerName }}</td>
-                        <td>{{ item.startTime |  date: 'dd/MM/yyyy, h:mm a' }}</td>
-                        <td class="m-1">
-                            <button class="btn btn-sm btn-outline-primary">Reschedule</button>
-                            <button class="btn btn-sm btn-outline-danger ms-1">Cancel</button>
-                            <button class="btn btn-sm btn-outline-success ms-1">Completed</button>
+                        <td>{{ item.startTime | date: 'dd/MM/yyyy, h:mm a' }}</td>
+                        <td>{{ item.ownerName }}</td>
+                        @if (bookingStatus !== 'Completed' && bookingStatus != 'Cancelled') {
+                        <td>
+                            <button class="btn btn-sm btn-outline-danger ms-1" (click)="cancel(item)">Cancel</button>
+                             <button class="btn btn-sm btn-outline-success ms-1" (click)="complete(item)">Completed</button>
                         </td>
+                        }
+                    </tr>
+                    }
+                    }
+                    } @else {
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">Booking not available</td>
                     </tr>
                     }
                 </tbody>

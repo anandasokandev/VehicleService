@@ -1,7 +1,7 @@
 <div class="card shadow-sm">
     <div class="card-header d-flex justify-content-between text-white p-3" [ngClass]="{
          'bg-success': bookingStatus === 'Success',
-         'bg-primary': bookingStatus === 'Rescheduled',
+        
          'bg-danger': bookingStatus === 'Cancelled',
          'bg-warning': bookingStatus === 'Completed'
        }">
@@ -35,7 +35,6 @@
                         <td>{{ item.serviceCenterName }}</td>
                         @if (bookingStatus !== 'Completed' && bookingStatus != 'Cancelled') {
                         <td>
-                            <button class="btn btn-sm btn-outline-primary">Reschedule</button>
                             <button class="btn btn-sm btn-outline-danger ms-1" (click)="cancel(item)">Cancel</button>
                         </td>
                         }
